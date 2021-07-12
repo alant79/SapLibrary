@@ -41,7 +41,7 @@ app.post('/auth', function (req, res) {
 app.get('/getData', function (req, res) {
   try {
     if (!req.session.login) {
-      res.send('No session').Status(401);
+      res.status(401).send('No session');
       return
     }
 
