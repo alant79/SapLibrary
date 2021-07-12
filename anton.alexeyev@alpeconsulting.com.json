@@ -1,0 +1,66 @@
+{
+    "user": "anton.alexeyev@alpeconsulting.com",
+    "transactions": [
+        {
+            "transactionId": "000000000001",
+            "functionId": "000000000102",
+            "transactionName": "SE80",
+            "transactionDesc": "Словарь объектов ABAP",
+            "transactionAdvdesc": "gfddddddddddddd Словарь объектов ABAP"
+        },
+        {
+            "transactionId": "000000000002",
+            "functionId": "000000000102",
+            "transactionName": "SE38",
+            "transactionDesc": "Редактор программы ABAP",
+            "transactionAdvdesc": "gfddddddddddddd Словарь объектов ABAP"
+        },
+        {
+            "transactionId": "000000000003",
+            "functionId": "000000000103",
+            "transactionName": "SE37",
+            "transactionDesc": "Редактор  функ. модуля ABAP",
+            "transactionAdvdesc": "gfddddddddddddd Редактор  функ. модуля ABAP"
+        },
+        {
+            "transactionId": "000000000004",
+            "functionId": "000000000105",
+            "transactionName": "SE11",
+            "transactionDesc": "Редатор объекта ABAP",
+            "transactionAdvdesc": "gfddddddddddddd Редатор объекта ABAP"
+        },
+        {
+            "transactionId": "000000000005",
+            "functionId": "000000000006",
+            "transactionName": "SE38",
+            "transactionDesc": "Редактор программы ABAP",
+            "transactionAdvdesc": "gfddddddddddddd Редактор программы ABAP"
+        }
+    ],
+    "functions": [
+        {
+            "functionId": "000000000102",
+            "functionName": "DEV14",
+            "functionParent": "000000000001",
+            "functionDesc": "Описание модуля DEV1"
+        },
+        {
+            "functionId": "000000000103",
+            "functionName": "DEV2",
+            "functionParent": "000000000001",
+            "functionDesc": "Описание модуля DEV2"
+        },
+        {
+            "functionId": "000000000105",
+            "functionName": "Логистика1",
+            "functionParent": "000000000004",
+            "functionDesc": "Описание модуля Логистика1"
+        },
+        {
+            "functionId": "000000000106",
+            "functionName": "Логистика2",
+            "functionParent": "000000000004",
+            "functionDesc": "Описание модуля Логистика2"
+        }
+    ]
+}

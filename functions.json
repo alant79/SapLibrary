@@ -1,0 +1,14 @@
+[
+    {
+        "functionId": "000000000001",        
+        "functionName": "DEV",
+        "functionParent": "",
+        "functionDesc": ""
+    },    
+    {
+        "functionId": "000000000004",
+        "functionName": "Логистика",
+        "functionParent": "",
+        "functionDesc": ""
+    }
+]
