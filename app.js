@@ -40,8 +40,10 @@ app.post('/auth', function (req, res) {
 
 app.get('/getData', function (req, res) {
   try {
-    console.log('session ',req.session)
-    if (!req.session.login) {
+    const login = req.session._ctx.body.login
+    const admin = req.session._ctx.body.admin   
+    console.log('session ', login)
+    if (!login) {
       res.status(401).send('No session');
       return
     }
@@ -50,12 +52,12 @@ app.get('/getData', function (req, res) {
 
     resObj = []
 
-    if (req.session.admin) {
+    if (admin) {
       users.forEach(el => {
         readUser(el.login, resObj)
       })
     } else {
-      readUser(req.session.login, resObj)
+      readUser(login, resObj)
     }
     res.send(resObj)
 
