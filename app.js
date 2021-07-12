@@ -40,7 +40,7 @@ app.post('/auth', function (req, res) {
 
 app.get('/getData', function (req, res) {
   try {
-    console.log('session ',req.session._ctx.body)
+    console.log('session ',req.session)
     if (!req.session.login) {
       res.status(401).send('No session');
       return
