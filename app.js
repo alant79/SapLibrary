@@ -10,7 +10,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(expressSession({
   secret: 'keyboard cat', resave: true,
-  saveUninitialized: true, cookie: { maxAge: 60000, secure: false, httpOnly: false }
+  saveUninitialized: true, cookie: { maxAge: 60000, secure: true }
 }))
 
 app.post('/auth', function (req, res) {
