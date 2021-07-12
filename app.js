@@ -10,7 +10,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(expressSession({
   secret: 'keyboard cat', resave: true,
-  saveUninitialized: true, cookie: { maxAge: 60000 }
+  saveUninitialized: true, cookie: { maxAge: 60000, secure: true }
 }))
 
 app.post('/auth', function (req, res) {
@@ -112,6 +112,6 @@ const readUser = (user, resObj) => {
   } catch (error) { }
 }
 
-const server = app.listen(process.env.PORT || 3000, function () {
+const server = app.listen(3000, function () {
   console.log('Сервер запущен на порте: ' + server.address().port);
 });
