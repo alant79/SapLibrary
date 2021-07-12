@@ -111,7 +111,7 @@ const readUser = (user, resObj) => {
     resObj.push(userObj)
   } catch (error) { }
 }
-
+ 
 const server = app.listen(process.env.PORT || 3000, function () {
   console.log('Сервер запущен на порте: ' + server.address().port);
 });
