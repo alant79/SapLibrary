@@ -32,9 +32,8 @@ app.post('/auth', function (req, res) {
       res.sendStatus(500);
     }
 
-  } catch (error) {
-    console.log(error);
-    res.status(500).send(error);
+  } catch (err) {
+    res.status(500).send({err: err.message});
   }
 });
 
@@ -63,7 +62,7 @@ app.get('/getData', function (req, res) {
 
   } catch (err) {
     res.status = 500;
-    res.send({ err })
+    res.send({ err: err.message })
   }
 });
 
@@ -112,7 +111,10 @@ const readUser = (user, resObj) => {
     })
     userObj.functions = functionsArr
     resObj.push(userObj)
-  } catch (error) { }
+  } catch (err) { 
+    res.status = 500;
+    res.send({ err: err.message })
+  }
 }
  
 const server = app.listen(process.env.PORT || 3000, function () {
