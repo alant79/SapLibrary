@@ -109,7 +109,7 @@ const readUser = async (res, user, resObj) => {
   const functionGroups = require(__dirname + '/functions.json');
   try {
     //const data = require(__dirname + `/${user.toLowerCase()}.json`);
-    collection.findOne({ user: user.toLowerCase() }).then(data => {
+    collection.findOne({ user }).then(data => {
       userObj = { user }
       const functionsArr = []
       userObj.transactions = data.transactions
