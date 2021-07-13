@@ -39,7 +39,7 @@ app.post('/auth', function (req, res) {
 
 app.get('/getData', function (req, res) {
   try {
-    const login = req.session._ctx.body.login || req.session.login
+    const login = req.session._ctx.body.LOGIN || req.session.login
     const admin = req.session._ctx.body.admin || req.session.admin
     console.log(req.session)
     if (!login) {
