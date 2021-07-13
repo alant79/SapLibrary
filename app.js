@@ -79,7 +79,7 @@ app.post('/setData', function (req, res) {
     fs.unlinkSync(file)
     fs.writeFileSync(file,JSON.stringify(req.body, null, 4))
     res.send('ok');
-
+ 
   } catch (err) {
     console.log(err)
     res.status = 500;
