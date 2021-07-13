@@ -108,7 +108,7 @@ const readUser = (user, resObj) => {
     userObj.transactions = data.transactions
     functionGroups.forEach(fg => {
       functionsArr.push(fg)
-      data.functions.filter(f => f.functionparent == fg.functionid).forEach(f => {
+      data.functions.filter(f => f.functionparent == fg.functionId).forEach(f => {
         functionsArr.push(f)
       })
     })
