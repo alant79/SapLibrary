@@ -4,6 +4,8 @@ const fs = require('fs');
 const app = express();
 const bodyParser = require('body-parser');
 const expressSession = require('cookie-session')
+const { MongoClient } = require('mongodb');
+var collection
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -33,7 +35,7 @@ app.post('/auth', function (req, res) {
     }
 
   } catch (err) {
-    res.status(500).send({err: err.message});
+    res.status(500).send({ err: err.message });
   }
 });
 
@@ -48,16 +50,19 @@ app.get('/getData', function (req, res) {
 
     const users = require(__dirname + '/users.json');
 
-    resObj = []
+    const resObj = []
 
-    if (admin) {
-      users.forEach(el => {
-        readUser(el.login, resObj)
-      })
-    } else {
-      readUser(login, resObj)
-    }
-    res.send(resObj)
+    
+    // if (admin) {
+    //   users.forEach(el => {
+    //     readUser(res, el.login)
+    //   })
+    // } else {
+    //   readUser(res, login, resObj)
+    // }
+
+    readUser(res, login, resObj)
+
 
   } catch (err) {
     res.status = 500;
@@ -74,16 +79,13 @@ app.post('/setData', function (req, res) {
       return
     }
 
-    user =  req.body.USER || req.body.user
+    user = req.body.USER || req.body.user
 
-    const file = path.join(__dirname,'DATA', `${user.toLowerCase()}.json`)
-    if(!fs.existsSync(path.join(__dirname,'DATA'))){
-      fs.mkdirSync(path.join(__dirname,'DATA'))
-      console.log(path.join(__dirname,'DATA'))
-    }
-    fs.writeFileSync(file,JSON.stringify(req.body, null, 4))
+    collection.updateOne({ user }, { $set: { transactions: req.body.transactions, functions: req.body.functions } }, { upsert: true })
+
+    // fs.writeFileSync(file,JSON.stringify(req.body, null, 4))
     res.send('ok');
- 
+
   } catch (err) {
     console.log(err)
     res.status = 500;
@@ -92,7 +94,7 @@ app.post('/setData', function (req, res) {
 });
 
 app.get('/', function (req, res) {
-    res.send('ok')
+  res.send('ok')
 });
 
 // catch 404 and forward to error handler
@@ -103,27 +105,41 @@ app.use(function (req, res, next) {
   next(err);
 });
 
-const readUser = (user, resObj) => {
+const readUser = async (res, user, resObj) => {
   const functionGroups = require(__dirname + '/functions.json');
   try {
-    const data = require(__dirname + `/${user.toLowerCase()}.json`);
-    userObj = { user }
-    const functionsArr = []
-    userObj.transactions = data.transactions
-    functionGroups.forEach(fg => {
-      functionsArr.push(fg)
-      data.functions.filter(f => f.functionparent == fg.functionId).forEach(f => {
-        functionsArr.push(f)
+    //const data = require(__dirname + `/${user.toLowerCase()}.json`);
+    collection.findOne({ user: user.toLowerCase() }).then(data => {
+      userObj = { user }
+      const functionsArr = []
+      userObj.transactions = data.transactions
+      functionGroups.forEach(fg => {
+        functionsArr.push(fg)
+        data.functions.filter(f => f.functionparent == fg.functionId).forEach(f => {
+          functionsArr.push(f)
+        })
       })
-    })
-    userObj.functions = functionsArr
-    resObj.push(userObj)
-  } catch (err) { 
+      userObj.functions = functionsArr
+      resObj.push(userObj)
+      res.send(resObj)
+    }
+    )
+
+  } catch (err) {
     res.status = 500;
     res.send({ err: err.message })
   }
 }
- 
+
 const server = app.listen(process.env.PORT || 3000, function () {
   console.log('Сервер запущен на порте: ' + server.address().port);
 });
+
+const uri = "mongodb+srv://alpe:12345@cluster0.cieys.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+client.connect(err => {
+  console.log('Клиент Mongo запущен');
+  collection = client.db("alpe").collection("sap-library");
+});
+
+
