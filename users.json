@@ -1,11 +1,11 @@
 [
     {
-        "login": "anton.alexeyev@alpeconsulting.com",
+        "login": "ANTON.ALEXEYEV@ALPECONSULTING.COM",
         "password": "123456789",    
         "admin": false            
     },
     {
-        "login": "konstantin.gachechiladze@alpeconsulting.com",
+        "login": "KONSTANTIN.GACHECHILADZE@ALPECONSULTING.COM",
         "password": "123456789",    
         "admin": true             
     }  

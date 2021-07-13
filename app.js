@@ -29,7 +29,7 @@ app.post('/auth', function (req, res) {
     });
 
     if (!fl) {
-      res.sendStatus(401);
+      res.sendStatus(500);
     }
 
   } catch (error) {
