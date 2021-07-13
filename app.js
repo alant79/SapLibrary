@@ -67,7 +67,6 @@ app.get('/getData', function (req, res) {
 
 app.post('/setData', function (req, res) {
   try {
-    console.log(req.session)
     const login = req.session._ctx.body.USER || req.session.login
     const admin = req.session._ctx.body.admin || req.session.admin
     if (!login) {
