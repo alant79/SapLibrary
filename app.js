@@ -70,7 +70,7 @@ app.post('/setData', function (req, res) {
     const login = req.session._ctx.body.USER || req.session.login
     const admin = req.session._ctx.body.admin || req.session.admin
     if (!login) {
-      res.sendStatus(401);
+      res.Status(401);
       return
     }
 
