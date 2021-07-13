@@ -61,7 +61,7 @@ app.get('/getData', function (req, res) {
 
   } catch (err) {
     res.status = 500;
-    res.send({ err: err.message })
+    res.send({ err: 'Ошибка ' + err.name + ":" + err.message + ":" + err.stack })
   }
 });
 
