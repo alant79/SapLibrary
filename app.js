@@ -75,7 +75,9 @@ app.post('/setData', function (req, res) {
     }
 
     const {user} =  req.body 
-    fs.writeFileSync(`${user}.json`,JSON.stringify(req.body, null, 4))
+    console.log(`${user.toLowerCase()}.json`)
+    console.log(req.body)
+    fs.writeFileSync(`${user.toLowerCase()}.json`,JSON.stringify(req.body, null, 4))
     res.send('ok');
 
   } catch (err) {
