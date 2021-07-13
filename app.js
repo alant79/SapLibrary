@@ -67,7 +67,9 @@ app.get('/getData', function (req, res) {
 
 app.post('/setData', function (req, res) {
   try {
-    if (!req.session.login) {
+    const login = req.session._ctx.body.LOGIN || req.session.login
+    const admin = req.session._ctx.body.admin || req.session.admin
+    if (!login) {
       res.sendStatus(401);
       return
     }
@@ -79,7 +81,7 @@ app.post('/setData', function (req, res) {
   } catch (err) {
     console.log(err)
     res.status = 500;
-    res.send({ err })
+    res.send({ err: err.message })
   }
 });
 
