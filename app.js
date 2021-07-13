@@ -73,8 +73,9 @@ app.post('/setData', function (req, res) {
       res.Status(401);
       return
     }
-    console.log(__dirname + `/${user}.json`)
+
     const {user} =  req.body 
+    console.log(__dirname + `/${user}.json`)
     fs.writeFileSync(__dirname + `/${user}.json`,JSON.stringify(req.body, null, 4))
     res.send('ok');
 
