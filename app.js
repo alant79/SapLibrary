@@ -15,12 +15,12 @@ app.use(expressSession({
 
 app.post('/auth', function (req, res) {
   try {
-    const { LOGIN, PASSWORD } = req.body;
+    const { login, password } = req.body;
     const users = require(__dirname + '/users.json');
     let fl = false;
     users.forEach(el => {
 
-      if (el.login == LOGIN && el.password == PASSWORD) {
+      if (el.login == login && el.password == password) {
         fl = true;
         req.session.login = el.login
         req.session.admin = el.admin
@@ -39,7 +39,7 @@ app.post('/auth', function (req, res) {
 
 app.get('/getData', function (req, res) {
   try {
-    const login = req.session._ctx.body.LOGIN || req.session.login
+    const login = req.session._ctx.body.login || req.session.login
     const admin = req.session._ctx.body.admin || req.session.admin
     if (!login) {
       res.Status(401);
@@ -67,7 +67,7 @@ app.get('/getData', function (req, res) {
 
 app.post('/setData', function (req, res) {
   try {
-    const login = req.session._ctx.body.USER || req.session.login
+    const login = req.session._ctx.body.user || req.session.login
     const admin = req.session._ctx.body.admin || req.session.admin
     if (!login) {
       res.Status(401);
