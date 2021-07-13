@@ -79,6 +79,7 @@ app.post('/setData', function (req, res) {
     const file = path.join(__dirname,'DATA', `${user.toLowerCase()}.json`)
     if(!fs.existsSync(path.join(__dirname,'DATA'))){
       fs.mkdirSync(path.join(__dirname,'DATA'))
+      console.log(path.join(__dirname,'DATA'))
     }
     fs.writeFileSync(file,JSON.stringify(req.body, null, 4))
     res.send('ok');
