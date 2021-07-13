@@ -100,7 +100,7 @@ app.use(function (req, res, next) {
 const readUser = (user, resObj) => {
   const functionGroups = require(__dirname + '/functions.json');
   try {
-    const data = require(__dirname + `/${user}.json`);
+    const data = require(__dirname + `/${user.toLowerCase()}.json`);
     userObj = { user }
     const functionsArr = []
     userObj.transactions = data.transactions
