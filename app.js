@@ -76,7 +76,6 @@ app.post('/setData', function (req, res) {
 
     user =  req.body.USER || req.body.user
     const file = path.join(__dirname, `${user.toLowerCase()}.json`)
-    fs.unlinkSync(file)
     fs.writeFileSync(file,JSON.stringify(req.body, null, 4))
     res.send('ok');
  
