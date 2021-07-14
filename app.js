@@ -122,15 +122,14 @@ const readUser = async (res, user, resObj) => {
       userObj.functions = functionsArr
       resObj.push(userObj)
       res.send(resObj)
-    },
-      rej => {
-        userObj = { user }
-        userObj.transactions = []
-        userObj.functions = functionGroups
-        resObj.push(userObj)
-        res.send(resObj)
-      }
-    )
+    }
+    ).catch(err=>{
+      userObj = { user }
+      userObj.transactions = []
+      userObj.functions = functionGroups
+      resObj.push(userObj)
+      res.send(resObj)
+    })
 
   } catch (err) {
     res.status = 500;
