@@ -52,7 +52,7 @@ app.get('/getData', function (req, res) {
 
     const resObj = []
 
-    
+
     // if (admin) {
     //   users.forEach(el => {
     //     readUser(res, el.login)
@@ -122,7 +122,14 @@ const readUser = async (res, user, resObj) => {
       userObj.functions = functionsArr
       resObj.push(userObj)
       res.send(resObj)
-    }
+    },
+      rej => {
+        userObj = { user }
+        userObj.transactions = []
+        userObj.functions = functionGroups
+        resObj.push(userObj)
+        res.send(resObj)
+      }
     )
 
   } catch (err) {
