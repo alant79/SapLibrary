@@ -81,7 +81,7 @@ app.post('/setData', function (req, res) {
 
     user = req.body.USER || req.body.user
 
-    collection.updateOne({ user }, { $set: { transactions: req.body.transactions, functions: req.body.functions } }, { upsert: true })
+    collection.updateOne({ user }, { $set: { transactions: req.body.transactions, functions: req.body.functions, refs: req.body.refs } }, { upsert: true })
 
     // fs.writeFileSync(file,JSON.stringify(req.body, null, 4))
     res.send('ok');
@@ -106,27 +106,21 @@ app.use(function (req, res, next) {
 });
 
 const readUser = async (res, user, resObj) => {
-  const functionGroups = require(__dirname + '/functions.json');
   try {
     //const data = require(__dirname + `/${user.toLowerCase()}.json`);
     collection.findOne({ user }).then(data => {
       userObj = { user }
-      const functionsArr = []
       userObj.transactions = data.transactions
-      functionGroups.forEach(fg => {
-        functionsArr.push(fg)
-        data.functions.filter(f => f.functionparent == fg.functionId).forEach(f => {
-          functionsArr.push(f)
-        })
-      })
-      userObj.functions = functionsArr
+      userObj.functions = data.functions
+      userObj.refs = data.refs
       resObj.push(userObj)
       res.send(resObj)
     }
     ).catch(err=>{
       userObj = { user }
       userObj.transactions = []
-      userObj.functions = functionGroups
+      userObj.functions = []
+      userObj.refs = []      
       resObj.push(userObj)
       res.send(resObj)
     })
