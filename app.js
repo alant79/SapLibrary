@@ -81,7 +81,12 @@ app.post('/setData', function (req, res) {
 
     user = req.body.USER || req.body.user
 
-    collection.updateOne({ user }, { $set: { transactions: req.body.transactions, functions: req.body.functions, refs: req.body.refs } }, { upsert: true })
+    collection.updateOne({ user }, {
+      $set: {
+        transactions: req.body.transactions, functions: req.body.functions, refs: req.body.refs,
+        classes: req.body.classes, badies: req.body.badies, bapies: req.body.bapies, fms: req.body.fms, exprs: req.body.exprs
+      }
+    }, { upsert: true })
 
     // fs.writeFileSync(file,JSON.stringify(req.body, null, 4))
     res.send('ok');
@@ -113,14 +118,24 @@ const readUser = async (res, user, resObj) => {
       userObj.transactions = data.transactions
       userObj.functions = data.functions
       userObj.refs = data.refs
+      userObj.classes = data.classes
+      userObj.badies = data.badies
+      userObj.bapies = data.bapies
+      userObj.fms = data.fms
+      userObj.exprs = data.exprs
       resObj.push(userObj)
       res.send(resObj)
     }
-    ).catch(err=>{
+    ).catch(err => {
       userObj = { user }
       userObj.transactions = []
       userObj.functions = []
-      userObj.refs = []      
+      userObj.refs = []
+      userObj.classes = []
+      userObj.badies = []
+      userObj.bapies = []
+      userObj.fms = []
+      userObj.exprs = []
       resObj.push(userObj)
       res.send(resObj)
     })
