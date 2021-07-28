@@ -42,27 +42,12 @@ app.post('/auth', function (req, res) {
 app.get('/getData', function (req, res) {
   try {
     const login = req.session._ctx.body.login || req.session.login
-    const admin = req.session._ctx.body.admin || req.session.admin
+
     if (!login) {
       res.Status(401);
       return
     }
-
-    const users = require(__dirname + '/users.json');
-
-    const resObj = []
-
-
-    // if (admin) {
-    //   users.forEach(el => {
-    //     readUser(res, el.login)
-    //   })
-    // } else {
-    //   readUser(res, login, resObj)
-    // }
-
-    readUser(res, login, resObj)
-
+    readUser(login).then(data => res.send(data))
 
   } catch (err) {
     res.status = 500;
@@ -99,7 +84,16 @@ app.post('/setData', function (req, res) {
 });
 
 app.get('/', function (req, res) {
-  res.send('ok')
+
+  try {
+    readAllUsers().then(data => {
+      res.send(data)
+    })
+  
+  } catch (err) {
+    res.status = 500;
+    res.send({ err: err.message })
+  }
 });
 
 // catch 404 and forward to error handler
@@ -110,10 +104,9 @@ app.use(function (req, res, next) {
   next(err);
 });
 
-const readUser = async (res, user, resObj) => {
-  try {
-    //const data = require(__dirname + `/${user.toLowerCase()}.json`);
-    collection.findOne({ user }).then(data => {
+const readUser = async (user) => {
+    arr = []
+    await collection.findOne({ user }).then(data => {
       userObj = { user }
       userObj.transactions = data.transactions
       userObj.functions = data.functions
@@ -123,8 +116,7 @@ const readUser = async (res, user, resObj) => {
       userObj.bapies = data.bapies
       userObj.fms = data.fms
       userObj.exprs = data.exprs
-      resObj.push(userObj)
-      res.send(resObj)
+      arr.push(userObj)
     }
     ).catch(err => {
       userObj = { user }
@@ -136,14 +128,20 @@ const readUser = async (res, user, resObj) => {
       userObj.bapies = []
       userObj.fms = []
       userObj.exprs = []
-      resObj.push(userObj)
-      res.send(resObj)
+      arr.push(userObj)
     })
+   return arr
+}
 
-  } catch (err) {
-    res.status = 500;
-    res.send({ err: err.message })
+const readAllUsers = async () => {
+  arr = []
+  const data = await collection.find()
+  doc = await data.next()
+  while (doc!=null) {
+    arr.push(doc)
+    doc = await data.next()
   }
+  return arr
 }
 
 const server = app.listen(process.env.PORT || 3000, function () {

@@ -8,5 +8,10 @@
         "login": "KONSTANTIN.GACHECHILADZE@ALPECONSULTING.COM",
         "password": "123456789",    
         "admin": true             
-    }  
+    },
+    {
+        "login": "anton.breikov@alpeconsulting.com",
+        "password": "dhjTY54s",    
+        "admin": false            
+    }
 ]
