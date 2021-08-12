@@ -13,5 +13,10 @@
         "login": "ANTON.BREIKOV@ALPECONSULTING.COM",
         "password": "DHJTY54S",    
         "admin": false            
-    }
+    },
+    {
+        "login": "VIKTOR.YURZANOV@ALPECONSULTING.COM",
+        "password": "WELCOME1!",    
+        "admin": false            
+    }  
 ]
