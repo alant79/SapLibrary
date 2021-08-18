@@ -1,12 +1,14 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
+const multer = require("multer");
 const app = express();
 const bodyParser = require('body-parser');
 const expressSession = require('cookie-session')
 const { MongoClient } = require('mongodb');
-var collection
+var collection, collectionFile
 
+app.use(multer({ dest: "uploads" }).single("filedata"));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -14,6 +16,7 @@ app.use(expressSession({
   secret: 'keyboard cat', resave: true,
   saveUninitialized: true, cookie: { maxAge: 60000, secure: true }
 }))
+
 
 app.post('/auth', function (req, res) {
   try {
@@ -89,12 +92,29 @@ app.get('/', function (req, res) {
     readAllUsers().then(data => {
       res.send(data)
     })
-  
+
   } catch (err) {
     res.status = 500;
     res.send({ err: err.message })
   }
 });
+
+app.post('/setFile', function (req, res) {
+  collectionFile.updateOne({ fileName: req.body.fileName }, {
+    $set: { file: fs.readFileSync(req.file.path) }
+  }, { upsert: true })
+  fs.unlinkSync(req.file.path)
+  res.send('ok')
+})
+
+app.post('/getFile', function (req, res) {
+  collectionFile.findOne({ fileName: req.body.fileName }).then(data => {
+    res.sendFile(path.join(__dirname, req.file.path), null, function (err) {
+      fs.unlinkSync(req.file.path)
+    })
+  })
+})
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -105,39 +125,39 @@ app.use(function (req, res, next) {
 });
 
 const readUser = async (user) => {
-    arr = []
-    await collection.findOne({ user }).then(data => {
-      userObj = { user }
-      userObj.transactions = data.transactions
-      userObj.functions = data.functions
-      userObj.refs = data.refs
-      userObj.classes = data.classes
-      userObj.badies = data.badies
-      userObj.bapies = data.bapies
-      userObj.fms = data.fms
-      userObj.exprs = data.exprs
-      arr.push(userObj)
-    }
-    ).catch(err => {
-      userObj = { user }
-      userObj.transactions = []
-      userObj.functions = []
-      userObj.refs = []
-      userObj.classes = []
-      userObj.badies = []
-      userObj.bapies = []
-      userObj.fms = []
-      userObj.exprs = []
-      arr.push(userObj)
-    })
-   return arr
+  arr = []
+  await collection.findOne({ user }).then(data => {
+    userObj = { user }
+    userObj.transactions = data.transactions
+    userObj.functions = data.functions
+    userObj.refs = data.refs
+    userObj.classes = data.classes
+    userObj.badies = data.badies
+    userObj.bapies = data.bapies
+    userObj.fms = data.fms
+    userObj.exprs = data.exprs
+    arr.push(userObj)
+  }
+  ).catch(err => {
+    userObj = { user }
+    userObj.transactions = []
+    userObj.functions = []
+    userObj.refs = []
+    userObj.classes = []
+    userObj.badies = []
+    userObj.bapies = []
+    userObj.fms = []
+    userObj.exprs = []
+    arr.push(userObj)
+  })
+  return arr
 }
 
 const readAllUsers = async () => {
   arr = []
   const data = await collection.find()
   doc = await data.next()
-  while (doc!=null) {
+  while (doc != null) {
     arr.push(doc)
     doc = await data.next()
   }
@@ -153,6 +173,7 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 client.connect(err => {
   console.log('Клиент Mongo запущен');
   collection = client.db("alpe").collection("sap-library");
+  collectionFile = client.db("alpe").collection("test-for-file");
 });
 
 
