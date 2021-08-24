@@ -8,7 +8,7 @@ const expressSession = require('cookie-session')
 const { MongoClient } = require('mongodb');
 var collection, collectionFile
 
-app.use(multer({ dest: "uploads" }).single("filedata"));
+app.use(multer({ dest: "uploads" }).single("FILEDATA"));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -111,8 +111,6 @@ app.post('/setFile', function (req, res) {
 app.post('/getFile', function (req, res) {
   const fileName = req.body.fileName || req.body.FILENAME  
   collectionFile.findOne({ fileName }).then(data => {
-    console.log(req)
-    console.log(req.file)   
     res.sendFile(path.join(__dirname, req.file.path), null, function (err) {
       fs.unlinkSync(req.file.path)
     })
