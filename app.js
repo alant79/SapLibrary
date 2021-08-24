@@ -110,6 +110,8 @@ app.post('/setFile', upload.single('FILEDATA'), function (req, res) {
 
 app.post('/getFile', upload.single('FILEDATA'), function (req, res) {
   const fileName = req.body.fileName || req.body.FILENAME  
+  console.log(res)
+  console.log(req)  
   collectionFile.findOne({ fileName }).then(data => {
     res.sendFile(path.join(__dirname, req.file.path), null, function (err) {
       fs.unlinkSync(req.file.path)
