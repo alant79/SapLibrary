@@ -100,7 +100,8 @@ app.get('/', function (req, res) {
 });
 
 app.post('/setFile', function (req, res) {
-  collectionFile.updateOne({ fileName: req.body.fileName }, {
+  const fileName = req.body.fileName || req.body.FILENAME
+  collectionFile.updateOne({ fileName }, {
     $set: { file: fs.readFileSync(req.file.path) }
   }, { upsert: true })
   fs.unlinkSync(req.file.path)
@@ -108,7 +109,8 @@ app.post('/setFile', function (req, res) {
 })
 
 app.post('/getFile', function (req, res) {
-  collectionFile.findOne({ fileName: req.body.fileName }).then(data => {
+  const fileName = req.body.fileName || req.body.FILENAME  
+  collectionFile.findOne({ fileName }).then(data => {
     res.sendFile(path.join(__dirname, req.file.path), null, function (err) {
       fs.unlinkSync(req.file.path)
     })
