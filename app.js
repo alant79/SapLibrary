@@ -2,13 +2,13 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const multer = require("multer");
+const upload = multer({ dest: 'uploads/' })
 const app = express();
 const bodyParser = require('body-parser');
 const expressSession = require('cookie-session')
 const { MongoClient } = require('mongodb');
 var collection, collectionFile
 
-app.use(multer({ dest: "uploads" }).single("FILEDATA"));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -99,7 +99,7 @@ app.get('/', function (req, res) {
   }
 });
 
-app.post('/setFile', function (req, res) {
+app.post('/setFile', upload.single('FILEDATA'), function (req, res) {
   const fileName = req.body.fileName || req.body.FILENAME
   collectionFile.updateOne({ fileName }, {
     $set: { file: fs.readFileSync(req.file.path) }
@@ -108,7 +108,7 @@ app.post('/setFile', function (req, res) {
   res.send('ok')
 })
 
-app.post('/getFile', function (req, res) {
+app.post('/getFile', upload.single('FILEDATA'), function (req, res) {
   const fileName = req.body.fileName || req.body.FILENAME  
   collectionFile.findOne({ fileName }).then(data => {
     res.sendFile(path.join(__dirname, req.file.path), null, function (err) {
