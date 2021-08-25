@@ -111,7 +111,6 @@ app.post('/setFile', upload.single('FILEDATA'), function (req, res) {
 app.post('/getFile', function (req, res) {
   const fileName = req.body.fileName || req.body.FILENAME
   collectionFile.findOne({ fileName }).then(data => {
-    console.log(__dirname,fileName)
     const pathFile = path.join(__dirname, 'uploads', fileName)
     fs.writeFile(pathFile, data.file.buffer, function (err) {
       res.sendFile(pathFile)
