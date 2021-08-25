@@ -111,6 +111,7 @@ app.post('/setFile', upload.single('FILEDATA'), function (req, res) {
 app.post('/setFileBinary', function (req, res) {
   const fileName = req.body.fileName || req.body.FILENAME
   const fileData = req.body.fileData || req.body.FILEDATA
+  console.log(fileName, fileData)
   collectionFile.updateOne({ fileName }, {
     $set: { file: fileData}
   }, { upsert: true })
