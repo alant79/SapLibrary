@@ -11,7 +11,7 @@ var collection, collectionFile
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: 15*1024*1024}));
 app.use(expressSession({
   secret: 'keyboard cat', resave: true,
   saveUninitialized: true, cookie: { maxAge: 60000, secure: true }
