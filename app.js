@@ -11,7 +11,7 @@ var collection, collectionFile
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json({limit: 15*1024*1024}));
+app.use(bodyParser.json({ limit: 15 * 1024 * 1024 }));
 app.use(expressSession({
   secret: 'keyboard cat', resave: true,
   saveUninitialized: true, cookie: { maxAge: 60000, secure: true }
@@ -113,15 +113,12 @@ app.post('/setFileBinary', function (req, res) {
   const fileData = req.body.fileData || req.body.FILEDATA
   const pathFile = path.join(__dirname, 'uploads', fileName)
   fs.writeFile(pathFile, fileData, function (err) {
-    const file = fs.readFile(pathFile, function(err) {
-      console.log(file)
-      collectionFile.updateOne({ fileName }, {
-        $set: { file }
-      }, { upsert: true }).then(()=> {
-        fs.unlink(pathFile, function () {
-          res.send('ok')
-        }); 
-      })
+    collectionFile.updateOne({ fileName }, {
+      $set: { file: fs.readFileSync(pathFile) }
+    }, { upsert: true }).then(() => {
+      fs.unlink(pathFile, function () {
+        res.send('ok')
+      });
     })
   })
 })
@@ -133,13 +130,13 @@ app.post('/getFile', function (req, res) {
     const pathFile = path.join(__dirname, 'uploads', fileName)
     fs.writeFile(pathFile, data.file.buffer, function (err) {
       res.sendFile(pathFile)
-      res.on('finish', function() {
+      res.on('finish', function () {
         try {
-          fs.unlinkSync(pathFile); 
-        } catch(e) {
-          console.log("error removing ", e); 
+          fs.unlinkSync(pathFile);
+        } catch (e) {
+          console.log("error removing ", e);
         }
-    });
+      });
     })
   })
 })
