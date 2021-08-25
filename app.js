@@ -108,6 +108,16 @@ app.post('/setFile', upload.single('FILEDATA'), function (req, res) {
   res.send('ok')
 })
 
+app.post('/setFileBinary', function (req, res) {
+  const fileName = req.body.fileName || req.body.FILENAME
+  const fileData = req.body.fileData || req.body.FILEDATA
+  collectionFile.updateOne({ fileName }, {
+    $set: { file: fileData}
+  }, { upsert: true })
+  res.send('ok')
+})
+
+
 app.post('/getFile', function (req, res) {
   const fileName = req.body.fileName || req.body.FILENAME
   collectionFile.findOne({ fileName }).then(data => {
