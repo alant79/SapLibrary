@@ -111,11 +111,18 @@ app.post('/setFile', upload.single('FILEDATA'), function (req, res) {
 app.post('/setFileBinary', function (req, res) {
   const fileName = req.body.fileName || req.body.FILENAME
   const fileData = req.body.fileData || req.body.FILEDATA
-  console.log(fileName, fileData)
-  collectionFile.updateOne({ fileName }, {
-    $set: { file: fileData}
-  }, { upsert: true })
-  res.send('ok')
+  const pathFile = path.join(__dirname, 'uploads', fileName)
+  fs.writeFile(pathFile, fileData, function (err) {
+    const file = fs.readFile(pathFile, function(err) {
+      collectionFile.updateOne({ fileName }, {
+        $set: { file }
+      }, { upsert: true }).then(()=> {
+        fs.unlink(pathFile, function () {
+          res.send('ok')
+        }); 
+      })
+    })
+  })
 })
 
 
