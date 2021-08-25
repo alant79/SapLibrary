@@ -108,13 +108,19 @@ app.post('/setFile', upload.single('FILEDATA'), function (req, res) {
   res.send('ok')
 })
 
-app.post('/getFile', upload.single('FILEDATA'), function (req, res) {
-  const fileName = req.body.fileName || req.body.FILENAME  
-  console.log(res)
-  console.log(req)  
+app.post('/getFile', function (req, res) {
+  const fileName = req.body.fileName || req.body.FILENAME
   collectionFile.findOne({ fileName }).then(data => {
-    res.sendFile(path.join(__dirname, req.file.path), null, function (err) {
-      fs.unlinkSync(req.file.path)
+    const pathFile = path.join(__dirname, 'uploads', fileName)
+    fs.writeFile(pathFile, data.file.buffer, function (err) {
+      res.sendFile(pathFile)
+      res.on('finish', function() {
+        try {
+          fs.unlinkSync(pathFile); 
+        } catch(e) {
+          console.log("error removing ", e); 
+        }
+    });
     })
   })
 })
