@@ -72,7 +72,8 @@ app.post('/setData', function (req, res) {
     collection.updateOne({ user }, {
       $set: {
         transactions: req.body.transactions, functions: req.body.functions, refs: req.body.refs,
-        classes: req.body.classes, badies: req.body.badies, bapies: req.body.bapies, fms: req.body.fms, exprs: req.body.exprs
+        classes: req.body.classes, badies: req.body.badies, bapies: req.body.bapies, fms: req.body.fms, exprs: req.body.exprs,
+        files: req.body.files, custdep: req.body.custdep
       }
     }, { upsert: true })
 
@@ -152,6 +153,7 @@ app.use(function (req, res, next) {
 
 const readUser = async (user) => {
   arr = []
+  const customers = require(__dirname + '/customers.json');
   await collection.findOne({ user }).then(data => {
     userObj = { user }
     userObj.transactions = data.transactions
@@ -162,6 +164,9 @@ const readUser = async (user) => {
     userObj.bapies = data.bapies
     userObj.fms = data.fms
     userObj.exprs = data.exprs
+    userObj.cust = customers
+    userObj.files = data.files
+    userObj.custdep= data.custdep   
     arr.push(userObj)
   }
   ).catch(err => {
@@ -174,6 +179,9 @@ const readUser = async (user) => {
     userObj.bapies = []
     userObj.fms = []
     userObj.exprs = []
+    userObj.cust = customers
+    userObj.files = []
+    userObj.custdep = []   
     arr.push(userObj)
   })
   return arr
