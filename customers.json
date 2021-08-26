@@ -1,18 +1,18 @@
 [
     {
-        "id": "000000000001",
-        "name": "Арла AED100"         
+        "customerid": "000000000001",
+        "customername": "Арла AED100"         
     },
     {
-        "id": "000000000002",
-        "name": "Арла AEQ200"             
+        "customerid": "000000000002",
+        "customername": "Арла AEQ200"             
     },
     {
-        "id": "000000000003",
-        "name": "Franke AED100"             
+        "customerid": "000000000003",
+        "customername": "Franke AED100"             
     },
     {
-        "id": "000000000004",
-        "name": "Franke AEQ100"              
+        "customerid": "000000000004",
+        "customername": "Franke AEQ100"              
     }
 ]
