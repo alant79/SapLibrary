@@ -79,7 +79,6 @@ app.post('/setData', function (req, res) {
     }, { upsert: true })
 
     // fs.writeFileSync(file,JSON.stringify(req.body, null, 4))
-    console.log('data')
     res.send('ok');
     // })
 
@@ -134,9 +133,8 @@ app.post('/setFileBinary', function (req, res) {
   var fileData = req.body.FILEDATA || req.body.filedata
   var pathFile = path.join(__dirname, 'uploads', fileName)
   fs.writeFile(pathFile, fileData, function (err) {
-    console.log('file')
     collectionFile.updateOne({ user}, {
-      $set: { 'files.1.filesdata': 'kkkk'}
+      $set: { 'files': 'kkkk'}
     }
     // ,
     //   { arrayFilters: [{ "elem.filesid": {"$eq": id }}] }
