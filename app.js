@@ -68,7 +68,7 @@ app.post('/setData', function (req, res) {
     }
 
     user = req.body.USER || req.body.user
-    console.log('data')
+  
     // filesFromReq = getFilesFromReq(req.body.files).then(()=> {
     collection.updateOne({ user }, {
       $set: {
@@ -79,6 +79,7 @@ app.post('/setData', function (req, res) {
     }, { upsert: true })
 
     // fs.writeFileSync(file,JSON.stringify(req.body, null, 4))
+    console.log('data')
     res.send('ok');
     // })
 
