@@ -68,19 +68,19 @@ app.post('/setData', function (req, res) {
     }
 
     user = req.body.USER || req.body.user
-    console.log(req.body.files)
-    filesFromReq = getFilesFromReq(req.body.files).then(()=> {
+    
+    // filesFromReq = getFilesFromReq(req.body.files).then(()=> {
       collection.updateOne({ user }, {
         $set: {
           transactions: req.body.transactions, functions: req.body.functions, refs: req.body.refs,
           classes: req.body.classes, badies: req.body.badies, bapies: req.body.bapies, fms: req.body.fms, exprs: req.body.exprs,
-          files: filesFromReq, custdep: req.body.custdep
+          files: req.body.files, custdep: req.body.custdep
         }
       }, { upsert: true })
   
       // fs.writeFileSync(file,JSON.stringify(req.body, null, 4))
       res.send('ok');
-    })
+    // })
 
 
   } catch (err) {
