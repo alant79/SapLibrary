@@ -68,6 +68,7 @@ app.post('/setData', function (req, res) {
     }
 
     user = req.body.USER || req.body.user
+    console.log(req.body.files)
     filesFromReq = getFilesFromReq(req.body.files).then(()=> {
       collection.updateOne({ user }, {
         $set: {
