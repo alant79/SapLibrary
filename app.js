@@ -68,7 +68,7 @@ app.post('/setData', function (req, res) {
     }
 
     user = req.body.USER || req.body.user
-
+    console.log('data')
     // filesFromReq = getFilesFromReq(req.body.files).then(()=> {
     collection.updateOne({ user }, {
       $set: {
@@ -133,6 +133,7 @@ app.post('/setFileBinary', function (req, res) {
   var fileData = req.body.FILEDATA || req.body.filedata
   var pathFile = path.join(__dirname, 'uploads', fileName)
   fs.writeFile(pathFile, fileData, function (err) {
+    console.log('file')
     collectionFile.updateOne({ user}, {
       $set: { 'files.1.filesdata': 'kkkk'}
     }
