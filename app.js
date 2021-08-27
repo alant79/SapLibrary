@@ -137,8 +137,8 @@ app.post('/setFileBinary', function (req, res) {
       $set: { 'files.$[elem].filesdata': fs.readFileSync(pathFile) }
     },
       { arrayFilters: [{ "elem.filesid": id }] }
-    ).then((res) => {
-      console.log(res.n,res.nModified)
+    ).then((r) => {
+      console.log(r.n,r.nModified)
       fs.unlink(pathFile, function () {
         res.send('ok')
       });
