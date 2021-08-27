@@ -133,9 +133,9 @@ app.post('/setFileBinary', function (req, res) {
   const fileData =  req.body.FILEDATA ||  req.body.filedata
   const pathFile = path.join(__dirname, 'uploads', fileName)
   fs.writeFile(pathFile, fileData, function (err) {
-    collectionFile.updateOne({ filter: {'user':user,"files:filesid":id }, update: {
+    collectionFile.updateOne( {'user':user,"files:filesid":id },  {
       $set: { 'files.$.filesdata': fs.readFileSync(pathFile) }
-    }}, { upsert: true }).then(() => {
+    }).then(() => {
       fs.unlink(pathFile, function () {
         res.send('ok')
       });
