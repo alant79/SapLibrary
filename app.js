@@ -129,9 +129,8 @@ const getFilesFromReq = async (filelist) => {
 app.post('/setFileBinary', function (req, res) {
   const user =      req.body.USER || req.body.user
   const id =        req.body.ID || req.body.id 
-  const fileName =  req.body.FILENAME || req.body.fileName
-  const fileData =  req.body.FILEDATA ||  req.body.fileData
-  console.log(req.body)
+  const fileName =  req.body.FILENAME || req.body.filename
+  const fileData =  req.body.FILEDATA ||  req.body.filedata
   const pathFile = path.join(__dirname, 'uploads', fileName)
   fs.writeFile(pathFile, fileData, function (err) {
     collectionFile.updateOne({ filter: {'user':user,"files:filesid":id }, update: {
