@@ -127,10 +127,10 @@ const getFilesFromReq = async (filelist) => {
 }
 
 app.post('/setFileBinary', function (req, res) {
-  const user = req.body.USER || req.body.user
-  const id = req.body.ID || req.body.id 
-  const fileName = req.body.fileName || req.body.FILENAME
-  const fileData = req.body.fileData || req.body.FILEDATA
+  const user =      req.body.USER || req.body.user
+  const id =        req.body.ID || req.body.id 
+  const fileName =  req.body.FILENAME || req.body.fileName
+  const fileData =  req.body.FILEDATA ||  req.body.fileData
   console.log(user, id, fileName, fileData)
   const pathFile = path.join(__dirname, 'uploads', fileName)
   fs.writeFile(pathFile, fileData, function (err) {
