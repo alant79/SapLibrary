@@ -68,7 +68,7 @@ app.post('/setData', function (req, res) {
     }
 
     user = req.body.USER || req.body.user
-  
+
     // filesFromReq = getFilesFromReq(req.body.files).then(()=> {
     collection.updateOne({ user }, {
       $set: {
@@ -133,13 +133,12 @@ app.post('/setFileBinary', function (req, res) {
   var fileData = req.body.FILEDATA || req.body.filedata
   var pathFile = path.join(__dirname, 'uploads', fileName)
   fs.writeFile(pathFile, fileData, function (err) {
-    collectionFile.updateOne({ user}, {
-      $set: { 'files': 'kkkk'}
+    collection.updateOne({ user}, {
+      $set: { 'files.$[elem].filesdata': fs.readFileSync(pathFile) }
     }
-    // ,
-    //   { arrayFilters: [{ "elem.filesid": {"$eq": id }}] }
-    ).then((r) => {
-      console.log(r)
+    ,
+      { arrayFilters: [{ "elem.filesid": {"$eq": id }}] }
+    ).then(() => {
       fs.unlink(pathFile, function () {
         res.send('ok')
       });
