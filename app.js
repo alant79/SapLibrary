@@ -68,18 +68,18 @@ app.post('/setData', function (req, res) {
     }
 
     user = req.body.USER || req.body.user
-    
+
     // filesFromReq = getFilesFromReq(req.body.files).then(()=> {
-      collection.updateOne({ user }, {
-        $set: {
-          transactions: req.body.transactions, functions: req.body.functions, refs: req.body.refs,
-          classes: req.body.classes, badies: req.body.badies, bapies: req.body.bapies, fms: req.body.fms, exprs: req.body.exprs,
-          files: req.body.files, custdep: req.body.custdep
-        }
-      }, { upsert: true })
-  
-      // fs.writeFileSync(file,JSON.stringify(req.body, null, 4))
-      res.send('ok');
+    collection.updateOne({ user }, {
+      $set: {
+        transactions: req.body.transactions, functions: req.body.functions, refs: req.body.refs,
+        classes: req.body.classes, badies: req.body.badies, bapies: req.body.bapies, fms: req.body.fms, exprs: req.body.exprs,
+        files: req.body.files, custdep: req.body.custdep
+      }
+    }, { upsert: true })
+
+    // fs.writeFileSync(file,JSON.stringify(req.body, null, 4))
+    res.send('ok');
     // })
 
 
@@ -114,11 +114,11 @@ app.post('/setFile', upload.single('FILEDATA'), function (req, res) {
 
 const getFilesFromReq = async (filelist) => {
 
-  filelistReturn = filelist 
+  filelistReturn = filelist
   filelistReturn.map(fileEl => {
     const pathFile = path.join(__dirname, 'uploads', fileEl.filesfullname)
     fs.writeFile(pathFile, fileEl.filesData, function (err) {
-      fileEl.filesdata =  fs.readFile(pathFile, function (err) {
+      fileEl.filesdata = fs.readFile(pathFile, function (err) {
         fs.unlink(pathFile)
       })
     })
@@ -127,15 +127,17 @@ const getFilesFromReq = async (filelist) => {
 }
 
 app.post('/setFileBinary', function (req, res) {
-  const user =      req.body.USER || req.body.user
-  const id =        req.body.ID || req.body.id 
-  const fileName =  req.body.FILENAME || req.body.filename
-  const fileData =  req.body.FILEDATA ||  req.body.filedata
+  const user = req.body.USER || req.body.user
+  const id = req.body.ID || req.body.id
+  const fileName = req.body.FILENAME || req.body.filename
+  const fileData = req.body.FILEDATA || req.body.filedata
   const pathFile = path.join(__dirname, 'uploads', fileName)
   fs.writeFile(pathFile, fileData, function (err) {
-    collectionFile.updateOne( {'user':user,"files:filesid":id },  {
-      $set: { 'files.$.filesdata': fs.readFileSync(pathFile) }
-    }).then(() => {
+    collectionFile.updateOne({ user }, {
+      $set: { 'files.$[elem].filesdata': fs.readFileSync(pathFile) }
+    },
+      { arrayFilters: [{ "elem.filesid": id }] }
+    ).then(() => {
       fs.unlink(pathFile, function () {
         res.send('ok')
       });
@@ -185,7 +187,7 @@ const readUser = async (user) => {
     userObj.exprs = data.exprs
     userObj.cust = customers
     userObj.files = data.files
-    userObj.custdep= data.custdep   
+    userObj.custdep = data.custdep
     arr.push(userObj)
   }
   ).catch(err => {
@@ -200,7 +202,7 @@ const readUser = async (user) => {
     userObj.exprs = []
     userObj.cust = customers
     userObj.files = []
-    userObj.custdep = []   
+    userObj.custdep = []
     arr.push(userObj)
   })
   return arr
