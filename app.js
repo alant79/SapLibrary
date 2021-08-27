@@ -134,7 +134,7 @@ app.post('/setFileBinary', function (req, res) {
   var pathFile = path.join(__dirname, 'uploads', fileName)
   fs.writeFile(pathFile, fileData, function (err) {
     collectionFile.updateOne({ user}, {
-      $set: { 'files.1.filesdata': fs.readFileSync(pathFile) }
+      $set: { 'files.1.filesdata': 'kkkk'}
     }
     // ,
     //   { arrayFilters: [{ "elem.filesid": {"$eq": id }}] }
