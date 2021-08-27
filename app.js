@@ -131,6 +131,7 @@ app.post('/setFileBinary', function (req, res) {
   const id = req.body.ID || req.body.id 
   const fileName = req.body.fileName || req.body.FILENAME
   const fileData = req.body.fileData || req.body.FILEDATA
+  console.log(user, id, fileName, fileData)
   const pathFile = path.join(__dirname, 'uploads', fileName)
   fs.writeFile(pathFile, fileData, function (err) {
     collectionFile.updateOne({ filter: {'user':user,"files:filesid":id }, update: {
