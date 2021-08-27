@@ -127,13 +127,15 @@ const getFilesFromReq = async (filelist) => {
 }
 
 app.post('/setFileBinary', function (req, res) {
+  const user = req.body.USER || req.body.user
+  const id = req.body.ID || req.body.id 
   const fileName = req.body.fileName || req.body.FILENAME
   const fileData = req.body.fileData || req.body.FILEDATA
   const pathFile = path.join(__dirname, 'uploads', fileName)
   fs.writeFile(pathFile, fileData, function (err) {
-    collectionFile.updateOne({ fileName }, {
-      $set: { file: fs.readFileSync(pathFile) }
-    }, { upsert: true }).then(() => {
+    collectionFile.updateOne({ filter: {'user':user,"files:filesid":id }, update: {
+      $set: { 'files.$.filesdata': fs.readFileSync(pathFile) }
+    }}, { upsert: true }).then(() => {
       fs.unlink(pathFile, function () {
         res.send('ok')
       });
