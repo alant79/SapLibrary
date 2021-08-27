@@ -140,7 +140,8 @@ app.post('/setFileBinary', function (req, res) {
     }
     // ,
     //   { arrayFilters: [{ "elem.filesid": {"$eq": id }}] }
-    ).then(() => {
+    ).then((r) => {
+      console.log(r)
       fs.unlink(pathFile, function () {
         res.send('ok')
       });
