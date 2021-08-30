@@ -154,15 +154,15 @@ app.post('/setFileBinary', function (req, res) {
   // const filename = req.body.FILENAME || req.body.filename
   // var pathFile = path.join(__dirname, 'uploads', filename)
   // fs.writeFile(pathFile, filedata, function (err) {
-    collection.updateOne({ fileid, username }, {
-      $set: { 'filedata': filedata }
-    }
-      , { upsert: true }
-    ).then(() => {
+  collection.updateOne({ fileid, username }, {
+    $set: { 'filedata': filedata }
+  }
+    , { upsert: true }
+  ).then(() => {
 
-      // fs.unlink(pathFile, function () {
-        res.send('ok') 
-      // });
+    // fs.unlink(pathFile, function () {
+    res.send('ok')
+    // });
     // })
   })
 
@@ -191,17 +191,18 @@ app.post('/getFileBinary', function (req, res) {
   const username = req.body.USERNAME || req.body.username
   const filename = req.body.FILENAME || req.body.filename
   collection.findOne({ fileid, username }).then(data => {
-     const pathFile = path.join(__dirname, 'uploads', filename)
-    fs.writeFile(pathFile, data.filedata.buffer, function (err) {
-      res.sendFile(pathFile)
-      res.on('finish', function () {
-        try {
-          fs.unlinkSync(pathFile);
-        } catch (e) {
-          console.log("error removing ", e);
-        }
-      });
-    })
+    res.send(data.filedata)
+    // const pathFile = path.join(__dirname, 'uploads', filename)
+    // fs.writeFile(pathFile, data.filedata.buffer, function (err) {
+    //   res.sendFile(pathFile)
+    //   res.on('finish', function () {
+    //     try {
+    //       fs.unlinkSync(pathFile);
+    //     } catch (e) {
+    //       console.log("error removing ", e);
+    //     }
+    //   });
+    // })
   })
 })
 
