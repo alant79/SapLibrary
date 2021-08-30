@@ -151,13 +151,21 @@ app.post('/setFileBinary', function (req, res) {
   const fileid = req.body.FILEID || req.body.fileid
   const username = req.body.USERNAME || req.body.username
   const filedata = req.body.FILEDATA || req.body.filedata
-  collection.updateOne({ fileid, username }, {
-    $set: { 'filedata': filedata }
-  }
+  const fileName = req.body.FILENAME || req.body.fileName
+  var pathFile = path.join(__dirname, 'uploads', fileName)
+  fs.writeFile(pathFile, filedata, function (err) {
+    collection.updateOne({ fileid, username }, {
+      $set: { 'filedata': fs.readFileSync(filedata) }
+    }
       , { upsert: true }
-  ).then(() => {
-    res.send('ok')
+    ).then(() => {
+
+      fs.unlink(pathFile, function () {
+        res.send('ok')
+      });
+    })
   })
+
 })
 
 
