@@ -192,7 +192,7 @@ app.post('/getFileBinary', function (req, res) {
   const username = req.body.USERNAME || req.body.username
   const filename = req.body.FILENAME || req.body.filename
   collection.findOne({ fileid, username }).then(data => {
-    res.send(data.filedata)
+    res.send({filedata: data.filedata})
     // const pathFile = path.join(__dirname, 'uploads', filename)
     // fs.writeFile(pathFile, data.filedata.buffer, function (err) {
     //   res.sendFile(pathFile)
