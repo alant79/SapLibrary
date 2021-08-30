@@ -154,7 +154,7 @@ app.post('/setFileBinary', function (req, res) {
   collection.updateOne({ fileid, username }, {
     $set: { 'filedata': filedata }
   }
-      ,
+      , { upsert: true }
   ).then(() => {
     res.send('ok')
   })
