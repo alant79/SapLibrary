@@ -153,7 +153,6 @@ app.post('/setFileBinary', function (req, res) {
   const filedata = req.body.FILEDATA || req.body.filedata
   const filename = req.body.FILENAME || req.body.filename
   var pathFile = path.join(__dirname, 'uploads', filename)
-  console.log(pathFile, filename)
   fs.writeFile(pathFile, filedata, function (err) {
     collection.updateOne({ fileid, username }, {
       $set: { 'filedata': fs.readFileSync(pathFile) }
@@ -186,6 +185,26 @@ app.post('/getFile', function (req, res) {
     })
   })
 })
+
+app.post('/getBinaryFile', function (req, res) {
+  const fileid = req.body.FILEID || req.body.fileid
+  const username = req.body.USERNAME || req.body.username
+  const filename = req.body.FILENAME || req.body.filename
+  collectionFile.findOne({ fileid, username }).then(data => {
+    const pathFile = path.join(__dirname, 'uploads', filename)
+    fs.writeFile(pathFile, data.file.buffer, function (err) {
+      res.sendFile(pathFile)
+      res.on('finish', function () {
+        try {
+          fs.unlinkSync(pathFile);
+        } catch (e) {
+          console.log("error removing ", e);
+        }
+      });
+    })
+  })
+})
+
 
 
 // catch 404 and forward to error handler
