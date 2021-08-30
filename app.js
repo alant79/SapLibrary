@@ -151,6 +151,7 @@ app.post('/setFileBinary', function (req, res) {
   const fileid = req.body.FILEID || req.body.fileid
   const username = req.body.USERNAME || req.body.username
   const filedata = req.body.FILEDATA || req.body.filedata
+  console.log(filedata)
   // const filename = req.body.FILENAME || req.body.filename
   // var pathFile = path.join(__dirname, 'uploads', filename)
   // fs.writeFile(pathFile, filedata, function (err) {
