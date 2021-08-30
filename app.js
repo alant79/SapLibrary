@@ -186,11 +186,11 @@ app.post('/getFile', function (req, res) {
   })
 })
 
-app.post('/getBinaryFile', function (req, res) {
+app.post('/getFileBinary', function (req, res) {
   const fileid = req.body.FILEID || req.body.fileid
   const username = req.body.USERNAME || req.body.username
   const filename = req.body.FILENAME || req.body.filename
-  collectionFile.findOne({ fileid, username }).then(data => {
+  collection.findOne({ fileid, username }).then(data => {
     const pathFile = path.join(__dirname, 'uploads', filename)
     fs.writeFile(pathFile, data.file.buffer, function (err) {
       res.sendFile(pathFile)
