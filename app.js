@@ -152,7 +152,7 @@ app.post('/setFileBinary', function (req, res) {
   const username = req.body.USERNAME || req.body.username
   const filedata = req.body.FILEDATA || req.body.filedata
   collection.updateOne({ fileid, username }, {
-    $set: { 'filedata': fileData }
+    $set: { 'filedata': filedata }
   }
       ,
   ).then(() => {
