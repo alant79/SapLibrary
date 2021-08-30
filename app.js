@@ -126,24 +126,37 @@ const getFilesFromReq = async (filelist) => {
   return filelistReturn
 }
 
+// app.post('/setFileBinary', function (req, res) {
+//   const user = req.body.USER || req.body.user
+//   const id = req.body.ID || req.body.id
+//   const fileName = req.body.FILENAME || req.body.filename
+//   var fileData = req.body.FILEDATA || req.body.filedata
+//   var pathFile = path.join(__dirname, 'uploads', fileName)
+//   fs.writeFile(pathFile, fileData, function (err) {
+//     collection.updateOne({ user}, {
+//       $set: { 'files.$[elem].filesdata': fileData }
+//     }
+//     ,
+//       { arrayFilters: [{ "elem.filesid":  id }] }
+//     ).then((r) => {
+//       console.log(r)
+//       fs.unlink(pathFile, function () {
+//         res.send('ok')
+//       });
+//     })
+//   })
+// })
+
 app.post('/setFileBinary', function (req, res) {
-  const user = req.body.USER || req.body.user
-  const id = req.body.ID || req.body.id
-  const fileName = req.body.FILENAME || req.body.filename
-  var fileData = req.body.FILEDATA || req.body.filedata
-  var pathFile = path.join(__dirname, 'uploads', fileName)
-  fs.writeFile(pathFile, fileData, function (err) {
-    collection.updateOne({ user}, {
-      $set: { 'files.$[elem].filesdata': fileData }
-    }
-    ,
-      { arrayFilters: [{ "elem.filesid":  id }] }
-    ).then((r) => {
-      console.log(r)
-      fs.unlink(pathFile, function () {
-        res.send('ok')
-      });
-    })
+  const fileid = req.body.FILEID || req.body.fileid
+  const username = req.body.USERNAME || req.body.username
+  const filedata = req.body.FILEDATA || req.body.filedata
+  collection.updateOne({ fileid, username }, {
+    $set: { 'filedata': fileData }
+  }
+      ,
+  ).then(() => {
+    res.send('ok')
   })
 })
 
