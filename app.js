@@ -161,7 +161,7 @@ app.post('/setFileBinary', function (req, res) {
     ).then(() => {
 
       fs.unlink(pathFile, function () {
-        res.send('ok')
+        res.send('ok') 
       });
     })
   })
