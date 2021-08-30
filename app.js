@@ -191,18 +191,17 @@ app.post('/getFileBinary', function (req, res) {
   const username = req.body.USERNAME || req.body.username
   const filename = req.body.FILENAME || req.body.filename
   collection.findOne({ fileid, username }).then(data => {
-    // const pathFile = path.join(__dirname, 'uploads', filename)
-    res.send({'filedata': data.filedata.buffer})
-    // fs.writeFile(pathFile, data.filedata.buffer, function (err) {
-    //   res.sendFile(pathFile)
-    //   res.on('finish', function () {
-    //     try {
-    //       fs.unlinkSync(pathFile);
-    //     } catch (e) {
-    //       console.log("error removing ", e);
-    //     }
-    //   });
-    // })
+     const pathFile = path.join(__dirname, 'uploads', filename)
+    fs.writeFile(pathFile, data.filedata.buffer, function (err) {
+      res.sendFile(pathFile)
+      res.on('finish', function () {
+        try {
+          fs.unlinkSync(pathFile);
+        } catch (e) {
+          console.log("error removing ", e);
+        }
+      });
+    })
   })
 })
 
