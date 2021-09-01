@@ -8,7 +8,8 @@ const bodyParser = require('body-parser');
 const expressSession = require('cookie-session')
 const { MongoClient } = require('mongodb');
 var collection, collectionFile
-
+var cors = require('cors')
+app.use(cors())
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({ limit: 512 * 1024 * 1024 }));
