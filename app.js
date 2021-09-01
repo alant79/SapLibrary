@@ -258,7 +258,9 @@ const readAllUsers = async () => {
   const data = await collection.find()
   doc = await data.next()
   while (doc != null) {
-    arr.push(doc)
+    if (doc.user) {
+      arr.push(doc)
+    } 
     doc = await data.next()
   }
   return arr
